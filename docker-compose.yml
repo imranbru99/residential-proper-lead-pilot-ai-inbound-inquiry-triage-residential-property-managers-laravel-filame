@@ -1,0 +1,66 @@
+# ResidentialProperLeadPilot — Docker Compose
+# Author: Imran Ahmed <me@imrandev.bd> — https://imrandev.bd/contact
+
+services:
+  app:
+    build: .
+    container_name: residential-proper-lead-pilot-app
+    ports:
+      - "8123:8000"
+    environment:
+      APP_NAME: ResidentialProperLeadPilot
+      APP_ENV: local
+      APP_DEBUG: "true"
+      APP_URL: http://localhost:8123
+      APP_KEY: "base64:fl4vJrrR4CujmIoSK2yWdNxIorWniUp+CURkA8WHCTs="
+      DB_CONNECTION: mysql
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_DATABASE: residential_proper_lead_pilot
+      DB_USERNAME: rplp
+      DB_PASSWORD: secret
+      CACHE_STORE: database
+      QUEUE_CONNECTION: database
+      SESSION_DRIVER: database
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      AUTHOR_NAME: "Imran Ahmed"
+      AUTHOR_EMAIL: "me@imrandev.bd"
+      AUTHOR_WEBSITE: "https://imrandev.bd"
+    volumes:
+      - ./storage:/var/www/html/storage
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    restart: unless-stopped
+
+  mysql:
+    image: mysql:8.4
+    container_name: residential-proper-lead-pilot-mysql
+    environment:
+      MYSQL_DATABASE: residential_proper_lead_pilot
+      MYSQL_USER: rplp
+      MYSQL_PASSWORD: secret
+      MYSQL_ROOT_PASSWORD: rootsecret
+    ports:
+      - "33093:3306"
+    volumes:
+      - rplp_mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-uroot", "-prootsecret"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    container_name: residential-proper-lead-pilot-redis
+    ports:
+      - "63813:6379"
+    restart: unless-stopped
+
+volumes:
+  rplp_mysql_data:
