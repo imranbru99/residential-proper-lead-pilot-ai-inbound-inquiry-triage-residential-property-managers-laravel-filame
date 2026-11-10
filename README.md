@@ -92,7 +92,14 @@ Entrypoint runs `migrate` + `db:seed` automatically against MySQL (not SQLite).
 
 ## Screenshots
 
-See `docs/screenshots/` for home, features, modules, admin login, admin dashboard, and inquiries triage captures.
+| Page | File |
+|------|------|
+| Home | `docs/screenshots/home.png` |
+| Features | `docs/screenshots/features.png` |
+| Modules | `docs/screenshots/modules.png` |
+| Admin login | `docs/screenshots/admin-login.png` |
+| Admin dashboard | `docs/screenshots/admin-dashboard.png` |
+| Inquiries triage | `docs/screenshots/inquiries-triage.png` |
 
 ## Tech notes
 - Author: Imran Ahmed `<me@imrandev.bd>`
